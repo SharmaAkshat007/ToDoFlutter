@@ -8,8 +8,7 @@ class DB {
     return openDatabase(
       join(await getDatabasesPath(), 'tasks_database.db'),
       onCreate: (db, version) {
-        return db
-            .execute("CREATE TABLE tasks(id INTEGER PRIMARY KEY, task TEXT)");
+        return db.execute("CREATE TABLE tasks(id TEXT PRIMARY KEY, task TEXT)");
       },
       version: 1,
     );
@@ -38,16 +37,16 @@ class DB {
     final Database db = await connect();
 
     await db.update(
-      'task',
+      'tasks',
       task.toMap(),
       where: "id = ?",
       whereArgs: [task.id],
     );
   }
 
-  Future<void> deleteTask(int id) async {
+  Future<void> deleteTask(Task task) async {
     final Database db = await connect();
 
-    await db.delete('tasks', where: 'id=?', whereArgs: [id]);
+    await db.delete('tasks', where: 'id=?', whereArgs: [task.id]);
   }
 }
