@@ -23,6 +23,8 @@ class _ToDoState extends State<ToDo> {
 
   bool _spin = true;
 
+  TextEditingController _updateController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -34,6 +36,7 @@ class _ToDoState extends State<ToDo> {
 
   void getList() async {
     List<Task> dataBack = await DB().getTasks();
+    print(dataBack.map((data) => print('${data.id} ${data.task}')));
     setState(() {
       this.tasks = dataBack;
 
@@ -109,6 +112,7 @@ class _ToDoState extends State<ToDo> {
   }
 
   void updateEntry(int index) {
+    _updateController.text = tasks[index].task;
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return Scaffold(
         appBar: AppBar(
@@ -122,6 +126,7 @@ class _ToDoState extends State<ToDo> {
         body: Container(
           margin: EdgeInsets.only(top: 20, right: 15, left: 15),
           child: TextField(
+            controller: _updateController,
             autofocus: true,
             style: TextStyle(
               fontSize: 19,
@@ -170,28 +175,27 @@ class _ToDoState extends State<ToDo> {
               ),
             ),
             trailing: UnconstrainedBox(
-              child: Container(
-                child: Row(
-                  children: [
-                    IconButton(
-                      color: Colors.blue,
-                      onPressed: () {
-                        updateEntry(index);
-                      },
-                      icon: Icon(Icons.mode_edit),
-                      tooltip: 'Update',
-                    ),
-                    SizedBox(width: 20),
-                    IconButton(
-                      color: Colors.green,
-                      onPressed: () {
-                        deleteList(index);
-                      },
-                      tooltip: 'Delete',
-                      icon: Icon(Icons.check_circle_outline_outlined),
-                    ),
-                  ],
-                ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  IconButton(
+                    color: Colors.blue,
+                    onPressed: () {
+                      updateEntry(index);
+                    },
+                    icon: Icon(Icons.mode_edit),
+                    tooltip: 'Update',
+                  ),
+                  SizedBox(width: 20),
+                  IconButton(
+                    color: Colors.green,
+                    onPressed: () {
+                      deleteList(index);
+                    },
+                    tooltip: 'Delete',
+                    icon: Icon(Icons.check_circle_outline_outlined),
+                  ),
+                ],
               ),
             ),
           ),
