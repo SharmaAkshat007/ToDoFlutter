@@ -1,6 +1,8 @@
 # MyTask
 
-A new Flutter project.
+A ToDo App using Flutter.
+
+SQLite is used for data persistence.
 
 ## Getting Started
 
