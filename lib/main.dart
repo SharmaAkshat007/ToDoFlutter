@@ -36,7 +36,7 @@ class _ToDoState extends State<ToDo> {
 
   void getList() async {
     List<Task> dataBack = await DB().getTasks();
-    print(dataBack.map((data) => print('${data.id} ${data.task}')));
+
     setState(() {
       this.tasks = dataBack;
 
@@ -190,7 +190,73 @@ class _ToDoState extends State<ToDo> {
                   IconButton(
                     color: Colors.green,
                     onPressed: () {
-                      deleteList(index);
+                      showDialog(
+                        context: context,
+                        builder: (builder) {
+                          return AlertDialog(
+                            title: Text(
+                              'Are you sure you have completed this task?',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                            elevation: 20.0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            actions: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 5.0, bottom: 5.0),
+                                child: FlatButton(
+                                  onPressed: () {
+                                    deleteList(index);
+                                    Navigator.pop(context);
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 13, left: 13),
+                                    child: Text(
+                                      'Yes',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.normal),
+                                    ),
+                                  ),
+                                  color: Colors.green,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 5.0, bottom: 5.0),
+                                child: FlatButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 13, left: 13),
+                                    child: Text(
+                                      'No',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.normal),
+                                    ),
+                                  ),
+                                  color: Colors.red,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     },
                     tooltip: 'Delete',
                     icon: Icon(Icons.check_circle_outline_outlined),
